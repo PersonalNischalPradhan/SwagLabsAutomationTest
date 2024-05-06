@@ -4,9 +4,9 @@
 
     <test name="FunctionalTestCases">
         <classes>
-            <class name="LoginTest"/>
+            <class name="UserAuthenticationTesting"/>
             <class name="NegativePlacingOrderWithoutFillingTheCheckoutDetails"/>
-            <class name="ValidateProductDetails"/>
+            <class name="ValidateProductDetailsAndComparePrice"/>
             <class name="VerifySortingFunctionality"/>
         </classes>
     </test>

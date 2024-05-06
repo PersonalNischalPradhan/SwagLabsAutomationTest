@@ -18,7 +18,7 @@ public class PlaceOrderFromPDPage extends BaseTest {
     private final int expected_ItemCount_Pdp = Integer.parseInt(TestUtils.getProperty("expected.ItemCount.Pdp"));
 
     @Epic("Swag Labs")
-    @Story("Product Details Page")
+    @Story("Place order from Product Details Page")
     @Test
     public void placeOrderFromProductDetails() {
         LoginPage loginPage = new LoginPage();

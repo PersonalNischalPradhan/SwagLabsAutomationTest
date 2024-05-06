@@ -70,12 +70,18 @@ public class HomePage {
         return itemPricePlp;
     }
 
-    public void sortingFunction() {
+    public void sortingFunction(String value) {
         $(By.xpath(SORTING_DROPDOWN_XPATH)).shouldBe(Condition.visible).click();
         Selenide.sleep(3000);
-        $(By.xpath(SORTING_DROPDOWN_XPATH)).shouldBe(Condition.visible).selectOptionByValue("az");
-        $(By.xpath(SORTING_DROPDOWN_XPATH)).shouldBe(Condition.visible).selectOptionByValue("za");
-        $(By.xpath(SORTING_DROPDOWN_XPATH)).shouldBe(Condition.visible).selectOptionByValue("lohi");
-        $(By.xpath(SORTING_DROPDOWN_XPATH)).shouldBe(Condition.visible).selectOptionByValue("hilo");
+        switch (value) {
+            case "az":
+            case "za":
+            case "lohi":
+            case "hilo":
+                $(By.xpath(SORTING_DROPDOWN_XPATH)).selectOptionByValue(value);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid sorting value: " + value);
+        }
     }
 }

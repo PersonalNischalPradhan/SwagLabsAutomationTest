@@ -1,6 +1,7 @@
 import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.SelenideElement;
-import org.openqa.selenium.By;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Step;
+import io.qameta.allure.Story;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pages.LoginPage;
@@ -8,8 +9,7 @@ import utils.TestUtils;
 
 import static org.testng.Assert.assertEquals;
 
-
-public class LoginTest extends BaseTest {
+public class UserAuthenticationTesting extends BaseTest {
     private final String standard_username = TestUtils.getProperty("standard.username");
     private final String valid_password = TestUtils.getProperty("valid.password");
     private final String performance_glitch_user = TestUtils.getProperty("performance.glitch.username");
@@ -23,7 +23,8 @@ public class LoginTest extends BaseTest {
     private final String error_message2 = TestUtils.getProperty("error.message2");
     private final String error_message4 = TestUtils.getProperty("error.message4");
     private final String error_message5 = TestUtils.getProperty("error.message5");
-
+    @Epic("Swag Labs")
+    @Story("Unhappy path for login functionality")
     @Test(dataProvider = "userDataUnhappyPath")
     public void testLoginUnhappyPath(String username,String password,String expectedErrorMessage) {
         LoginPage loginPage = new LoginPage();
@@ -32,6 +33,8 @@ public class LoginTest extends BaseTest {
         uiMessageValidation(username,password,expectedErrorMessage);
 
     }
+    @Epic("Swag Labs")
+    @Story("Happy path for login functionality")
     @Test(dataProvider = "userDataHappyPath")
     public void testLoginHappyPath(String username,String password) {
         LoginPage loginPage = new LoginPage();
@@ -39,6 +42,8 @@ public class LoginTest extends BaseTest {
         Selenide.sleep(4000);
 
     }
+
+    @Step
     public void uiMessageValidation(String username,String password,String expectedErrorMessage) {
 
         LoginPage loginPage = new LoginPage();

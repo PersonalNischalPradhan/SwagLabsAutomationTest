@@ -1,4 +1,7 @@
 import com.codeborne.selenide.Selenide;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Step;
+import io.qameta.allure.Story;
 import org.testng.annotations.Test;
 import pages.*;
 import utils.TestUtils;
@@ -12,6 +15,8 @@ public class PlaceOrderWithGlitchUserAddingAllItems extends BaseTest{
     private final String expected_OrderDispatchedText = TestUtils.getProperty("expected.OrderDispatchedText");
     private final int expected_ItemCount = Integer.parseInt(TestUtils.getProperty("expected.ItemCount"));
 
+    @Epic("Swag Labs")
+    @Story("Place order with all the items present with a glitch user")
     @Test
     public void addProductsToBasketGlitchUser() {
         LoginPage loginPage = new LoginPage();
@@ -41,16 +46,19 @@ public class PlaceOrderWithGlitchUserAddingAllItems extends BaseTest{
 
     }
 
+    @Step
     public void validateOrderConfirmationText() {
         OrderConfirmationPage orderConfirmationPage=new OrderConfirmationPage();
         String actualUiConfirmationText = orderConfirmationPage.getOrderConfirmationMessage();
         assertEquals(actualUiConfirmationText, expected_OrderConfirmationText,"Order Confirmation text  mismatched ");
     }
+    @Step
     public void validateOrderDispatched() {
         OrderConfirmationPage orderConfirmationPage=new OrderConfirmationPage();
         String actualUiDispatchedText = orderConfirmationPage.getOrderDispatchedMessage();
         assertEquals(actualUiDispatchedText, expected_OrderDispatchedText,"Order Confirmation text  mismatched ");
     }
+    @Step
     public void validateBasketCount() {
         HomePage homePage= new HomePage();
         int actualItemCount = homePage.getItemsInBasketCount();
