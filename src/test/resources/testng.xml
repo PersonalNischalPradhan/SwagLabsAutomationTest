@@ -1,0 +1,21 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="Swag Labs Automation Test" verbose="1" >
+
+    <test name="FunctionalTestCases">
+        <classes>
+            <class name="LoginTest"/>
+            <class name="NegativePlacingOrderWithoutFillingTheCheckoutDetails"/>
+            <class name="ValidateProductDetails"/>
+            <class name="VerifySortingFunctionality"/>
+        </classes>
+    </test>
+    <test name="E2E Test Cases">
+        <classes>
+            <class name="PlaceOrderFromPDPage"/>
+            <class name="PlaceOrderWithStandardUserAddingAllItems"/>
+            <class name="PlaceOrderWithGlitchUserAddingAllItems"/>
+            <class name="PlaceOrderWithProblemUserAddingAllItems"/>
+        </classes>
+    </test>
+</suite>
