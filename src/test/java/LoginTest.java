@@ -1,0 +1,67 @@
+import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.By;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+import pages.LoginPage;
+import utils.TestUtils;
+
+import static org.testng.Assert.assertEquals;
+
+
+public class LoginTest extends BaseTest {
+    private final String standard_username = TestUtils.getProperty("standard.username");
+    private final String valid_password = TestUtils.getProperty("valid.password");
+    private final String performance_glitch_user = TestUtils.getProperty("performance.glitch.username");
+    private final String locked_out_user = TestUtils.getProperty("locked.out.username");
+    private final String problem_user = TestUtils.getProperty("problem.username");
+    private final String invalid_password = TestUtils.getProperty("invalid.password");
+    private final String blank_password = TestUtils.getProperty("blank.password");
+    private final String blank_username = TestUtils.getProperty("blank.username");
+    private final String invalid_username = TestUtils.getProperty("invalid.username");
+    private final String error_message1 = TestUtils.getProperty("error.message1");
+    private final String error_message2 = TestUtils.getProperty("error.message2");
+    private final String error_message4 = TestUtils.getProperty("error.message4");
+    private final String error_message5 = TestUtils.getProperty("error.message5");
+
+    @Test(dataProvider = "userDataUnhappyPath")
+    public void testLoginUnhappyPath(String username,String password,String expectedErrorMessage) {
+        LoginPage loginPage = new LoginPage();
+        loginPage.login(username,password);
+        Selenide.sleep(4000);
+        uiMessageValidation(username,password,expectedErrorMessage);
+
+    }
+    @Test(dataProvider = "userDataHappyPath")
+    public void testLoginHappyPath(String username,String password) {
+        LoginPage loginPage = new LoginPage();
+        loginPage.login(username,password);
+        Selenide.sleep(4000);
+
+    }
+    public void uiMessageValidation(String username,String password,String expectedErrorMessage) {
+
+        LoginPage loginPage = new LoginPage();
+            String actualUiErrorMessage = loginPage.getUIErrorText();
+            assertEquals(actualUiErrorMessage, expectedErrorMessage,"Error message mismatch for username: " + username);
+        }
+
+
+    @DataProvider(name = "userDataUnhappyPath")
+    public Object[][] userDataProviderUnhappyPath() {
+        return new Object[][] {
+                {locked_out_user, valid_password,error_message2},
+                {blank_username, blank_password,error_message1},
+                {invalid_username, valid_password,error_message4},
+                {standard_username,blank_password,error_message5}
+        };
+    }
+    @DataProvider(name = "userDataHappyPath")
+    public Object[][] userDataProviderHappyPath() {
+        return new Object[][] {
+                {standard_username,valid_password},
+                {problem_user, valid_password},
+                {performance_glitch_user, valid_password},
+        };
+    }
+}
