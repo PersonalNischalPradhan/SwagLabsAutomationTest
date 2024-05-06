@@ -13,7 +13,7 @@ public class VerifySortingFunctionality extends BaseTest{
     private final int expected_ItemCount = Integer.parseInt(TestUtils.getProperty("expected.ItemCount"));
 
     @Test
-    public void addProductsToBasketStdUser() {
+    public void validateSorting() {
         LoginPage loginPage = new LoginPage();
         loginPage.login(standard_username, valid_password);
         Selenide.sleep(4000);
