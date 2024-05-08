@@ -1,4 +1,8 @@
+package functional;
+
+import base.BaseTest;
 import com.codeborne.selenide.Selenide;
+import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Step;
 import io.qameta.allure.Story;
@@ -14,7 +18,7 @@ public class ValidateProductDetailsAndComparePrice extends BaseTest {
     private final String standard_username = TestUtils.getProperty("standard.username");
     private final String valid_password = TestUtils.getProperty("valid.password");
     @Epic("Swag Labs")
-    @Story("Validate navigation from product lister to product details page")
+    @Description("Validate navigation from product lister to product details page")
     @Test
     public void navigateToProductDetails() {
         LoginPage loginPage = new LoginPage();

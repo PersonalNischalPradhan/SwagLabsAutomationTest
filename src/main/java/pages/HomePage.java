@@ -1,13 +1,16 @@
 package pages;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.switchTo;
+import java.util.*;
+
+import static com.codeborne.selenide.Selenide.*;
 import static java.lang.String.format;
 
 public class HomePage {
@@ -19,6 +22,10 @@ public class HomePage {
     private static final String SHOPPING_CART_COUNTER = "//*[@id='shopping_cart_container']/a/span";
     private static final String CLICK_ON_ITEM_NAME = "(//*[@class='inventory_item_name'])[%s]";
     private static final String ITEM_PRICE_PLP = "(//*[@class='inventory_item_price'])[%s]";
+    private static final String LIST_OF_INVENTORY_ITEM_NAME_XPATH = "//*[@class='inventory_item_name']";
+    private static final String LIST_OF_INVENTORY_ITEM_PRICE_XPATH = "//*[@class='inventory_item_price']";
+    private static final String HOME_PAGE_INVENTORY_ITEM_COUNT= "//*[@class='inventory_item']";
+    private static final String LIST_HOME_PAGE_INVENTORY_ITEM_COUNT= "//*[@class='inventory_list']";
 
     public void clickOnBasketIcon() {
         $(By.xpath(BASKET_ICON_XPATH)).shouldBe(Condition.visible).click();
@@ -72,7 +79,7 @@ public class HomePage {
 
     public void sortingFunction(String value) {
         $(By.xpath(SORTING_DROPDOWN_XPATH)).shouldBe(Condition.visible).click();
-        Selenide.sleep(3000);
+        Selenide.sleep(4000);
         switch (value) {
             case "az":
             case "za":
@@ -83,5 +90,49 @@ public class HomePage {
             default:
                 throw new IllegalArgumentException("Invalid sorting value: " + value);
         }
+    }
+    public List<String> getItemListForAtoZ() {
+        ArrayList<WebElement> initialList =new ArrayList<>($$(By.xpath(LIST_OF_INVENTORY_ITEM_NAME_XPATH)));
+        // Print the text of each element in the list
+        List<String> aToZList = new ArrayList<>();
+        for (WebElement element : initialList) {
+            aToZList.add(element.getText());
+        }
+        System.out.println(aToZList);
+        return aToZList;
+    }
+    public List<String> getItemListForZtoA() {
+        ArrayList<WebElement> initialList =new ArrayList<>($$(By.xpath(LIST_OF_INVENTORY_ITEM_NAME_XPATH)));
+        // Print the text of each element in the list
+        List<String> zToAList = new ArrayList<>();
+        for (WebElement element : initialList) {
+            zToAList.add(element.getText());
+        }
+        System.out.println("first time we get i.e actual result" +  zToAList);
+       Collections.reverse(zToAList);
+        System.out.println("Reverse Order for zToAList::" + zToAList);
+        return zToAList;
+    }
+    public List<String> getItemListForPriceLowToHigh() {
+        ArrayList<WebElement> initialList =new ArrayList<>($$(By.xpath(LIST_OF_INVENTORY_ITEM_PRICE_XPATH)));
+        // Print the text of each element in the list
+        List<String> lowToHighList = new ArrayList<>();
+        for (WebElement element : initialList) {
+            lowToHighList.add(element.getText());
+        }
+        System.out.println(lowToHighList);
+        return lowToHighList;
+    }
+    public List<String> getItemListForPriceHighToLow() {
+        ArrayList<WebElement> initialList =new ArrayList<>($$(By.xpath(LIST_OF_INVENTORY_ITEM_PRICE_XPATH)));
+        // Print the text of each element in the list
+        List<String> highToLowList = new ArrayList<>();
+        for (WebElement element : initialList) {
+            highToLowList.add(element.getText());
+        }
+        System.out.println("first time we get i.e actual result " +  highToLowList);
+        Collections.reverse(highToLowList);
+        System.out.println("Reverse Order for highToLowList::" + highToLowList);
+        return highToLowList;
     }
 }

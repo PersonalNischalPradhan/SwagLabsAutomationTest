@@ -1,4 +1,8 @@
+package functional;
+
+import base.BaseTest;
 import com.codeborne.selenide.Selenide;
+import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Step;
 import io.qameta.allure.Story;
@@ -24,7 +28,7 @@ public class UserAuthenticationTesting extends BaseTest {
     private final String error_message4 = TestUtils.getProperty("error.message4");
     private final String error_message5 = TestUtils.getProperty("error.message5");
     @Epic("Swag Labs")
-    @Story("Unhappy path for login functionality")
+    @Description("Unhappy path for login functionality")
     @Test(dataProvider = "userDataUnhappyPath")
     public void testLoginUnhappyPath(String username,String password,String expectedErrorMessage) {
         LoginPage loginPage = new LoginPage();

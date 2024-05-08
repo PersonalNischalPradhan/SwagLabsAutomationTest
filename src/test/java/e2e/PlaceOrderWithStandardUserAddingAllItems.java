@@ -1,4 +1,8 @@
+package e2e;
+
+import base.BaseTest;
 import com.codeborne.selenide.Selenide;
+import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Step;
 import io.qameta.allure.Story;
@@ -8,15 +12,20 @@ import utils.TestUtils;
 
 import static org.testng.Assert.assertEquals;
 
-public class PlaceOrderWithStandardUserAddingAllItems extends BaseTest{
+public class PlaceOrderWithStandardUserAddingAllItems extends BaseTest {
     private final String standard_username = TestUtils.getProperty("standard.username");
     private final String valid_password = TestUtils.getProperty("valid.password");
     private final String expected_OrderConfirmationText = TestUtils.getProperty("expected.OrderConfirmationText");
     private final String expected_OrderDispatchedText = TestUtils.getProperty("expected.OrderDispatchedText");
     private final int expected_ItemCount = Integer.parseInt(TestUtils.getProperty("expected.ItemCount"));
-
+    private final double expected_OrderPrice = Double.parseDouble(TestUtils.getProperty("expected.orderPrice"));
+    private final String expected_CardDetails = TestUtils.getProperty("expected.cardDetails");
+    private final String expected_shippingInfoDetailsActual = TestUtils.getProperty("expected.shippingDetails");
+    private final String first_name = TestUtils.getProperty("first.name");
+    private final String last_name = TestUtils.getProperty("last.name");
+    private final String valid_address = TestUtils.getProperty("valid.address");
     @Epic("Swag Labs")
-    @Story("Place order with all the items present with a standard user")
+    @Description("Place order with all the items present with a standard user")
     @Test
     public void addProductsToBasketStdUser() {
         LoginPage loginPage = new LoginPage();
@@ -35,11 +44,14 @@ public class PlaceOrderWithStandardUserAddingAllItems extends BaseTest{
         YourCartPage yourCartPage= new YourCartPage();
         yourCartPage.clickOnCheckoutButton();
         CheckoutInfoPage checkoutInfoPage=new CheckoutInfoPage();
-        checkoutInfoPage.enterFirstName("test");
-        checkoutInfoPage.enterLastName("testlast");
-        checkoutInfoPage.enterPostCode("SO15EE");
+        checkoutInfoPage.enterFirstName(first_name);
+        checkoutInfoPage.enterLastName(last_name);
+        checkoutInfoPage.enterPostCode(valid_address);
         checkoutInfoPage.clickOnContinue();
         CheckoutOverviewPage checkoutOverviewPage= new CheckoutOverviewPage();
+        validateOrderPrice();
+        validateCardDetails();
+        validateShippingInfoDetails();
         checkoutOverviewPage.clickOnFinishButton();
         validateOrderConfirmationText();
         validateOrderDispatched();
@@ -63,5 +75,23 @@ public class PlaceOrderWithStandardUserAddingAllItems extends BaseTest{
         HomePage homePage= new HomePage();
         int actualItemCount = homePage.getItemsInBasketCount();
         assertEquals(actualItemCount, expected_ItemCount,"Basket Count Mismatched for the user " +standard_username);
+    }
+    @Step
+    public void validateOrderPrice() {
+        CheckoutOverviewPage checkoutOverviewPage= new CheckoutOverviewPage();
+        double orderPriceActual = checkoutOverviewPage.getOrderPriceDetailsText();
+        assertEquals(orderPriceActual, expected_OrderPrice,"Order Price Mismatched for the user " +standard_username);
+    }
+    @Step
+    public void validateShippingInfoDetails() {
+        CheckoutOverviewPage checkoutOverviewPage= new CheckoutOverviewPage();
+        String shippingInfoDetailsActual = checkoutOverviewPage.getShippingInfoDetailsText();
+        assertEquals(shippingInfoDetailsActual, expected_shippingInfoDetailsActual,"Shipping Info Details Mismatched for the user " +standard_username);
+    }
+    @Step
+    public void validateCardDetails() {
+        CheckoutOverviewPage checkoutOverviewPage= new CheckoutOverviewPage();
+        String cardDetailsActual = checkoutOverviewPage.getCardDetailsText();
+        assertEquals(cardDetailsActual, expected_CardDetails,"Card Details Mismatched for the user " +standard_username);
     }
 }

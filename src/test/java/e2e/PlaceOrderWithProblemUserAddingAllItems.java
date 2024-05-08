@@ -1,4 +1,8 @@
+package e2e;
+
+import base.BaseTest;
 import com.codeborne.selenide.Selenide;
+import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Step;
 import io.qameta.allure.Story;
@@ -8,19 +12,21 @@ import utils.TestUtils;
 
 import static org.testng.Assert.assertEquals;
 
-public class PlaceOrderWithGlitchUserAddingAllItems extends BaseTest{
-    private final String performance_glitch_user = TestUtils.getProperty("performance.glitch.username");
+public class PlaceOrderWithProblemUserAddingAllItems extends BaseTest {
+    private final String problem_user = TestUtils.getProperty("problem.username");
     private final String valid_password = TestUtils.getProperty("valid.password");
     private final String expected_OrderConfirmationText = TestUtils.getProperty("expected.OrderConfirmationText");
     private final String expected_OrderDispatchedText = TestUtils.getProperty("expected.OrderDispatchedText");
     private final int expected_ItemCount = Integer.parseInt(TestUtils.getProperty("expected.ItemCount"));
-
+    private final String first_name = TestUtils.getProperty("first.name");
+    private final String last_name = TestUtils.getProperty("last.name");
+    private final String valid_address = TestUtils.getProperty("valid.address");
     @Epic("Swag Labs")
-    @Story("Place order with all the items present with a glitch user")
+    @Description("Place order with allowed items present with a problem user")
     @Test
-    public void addProductsToBasketGlitchUser() {
+    public void addProductsToBasketProblemUser() {
         LoginPage loginPage = new LoginPage();
-        loginPage.login(performance_glitch_user,valid_password);
+        loginPage.login(problem_user,valid_password);
         Selenide.sleep(4000);
         HomePage homePage=new HomePage();
         homePage.addToBasket("6");
@@ -35,9 +41,9 @@ public class PlaceOrderWithGlitchUserAddingAllItems extends BaseTest{
         YourCartPage yourCartPage= new YourCartPage();
         yourCartPage.clickOnCheckoutButton();
         CheckoutInfoPage checkoutInfoPage=new CheckoutInfoPage();
-        checkoutInfoPage.enterFirstName("test");
-        checkoutInfoPage.enterLastName("testlast");
-        checkoutInfoPage.enterPostCode("SO15EE");
+        checkoutInfoPage.enterFirstName(first_name);
+        checkoutInfoPage.enterLastName(last_name);
+        checkoutInfoPage.enterPostCode(valid_address);
         checkoutInfoPage.clickOnContinue();
         CheckoutOverviewPage checkoutOverviewPage= new CheckoutOverviewPage();
         checkoutOverviewPage.clickOnFinishButton();
@@ -45,7 +51,6 @@ public class PlaceOrderWithGlitchUserAddingAllItems extends BaseTest{
         validateOrderDispatched();
 
     }
-
     @Step
     public void validateOrderConfirmationText() {
         OrderConfirmationPage orderConfirmationPage=new OrderConfirmationPage();
@@ -58,10 +63,12 @@ public class PlaceOrderWithGlitchUserAddingAllItems extends BaseTest{
         String actualUiDispatchedText = orderConfirmationPage.getOrderDispatchedMessage();
         assertEquals(actualUiDispatchedText, expected_OrderDispatchedText,"Order Confirmation text  mismatched ");
     }
+    //Here I am deliberately trying to fail the test cases to prove that there is a mismatch in the basket count due to a problematic user.
     @Step
     public void validateBasketCount() {
         HomePage homePage= new HomePage();
         int actualItemCount = homePage.getItemsInBasketCount();
-        assertEquals(actualItemCount, expected_ItemCount,"Basket Count Mismatched for the user " +performance_glitch_user);
+        assertEquals(actualItemCount, expected_ItemCount,"Basket Count Mismatched for the user " +problem_user);
     }
+
 }

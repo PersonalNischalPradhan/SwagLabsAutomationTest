@@ -1,4 +1,8 @@
+package functional;
+
+import base.BaseTest;
 import com.codeborne.selenide.Selenide;
+import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Step;
 import io.qameta.allure.Story;
@@ -8,14 +12,14 @@ import utils.TestUtils;
 
 import static org.testng.Assert.assertEquals;
 
-public class NegativePlacingOrderWithoutFillingTheCheckoutDetails extends BaseTest{
+public class NegativePlacingOrderWithoutFillingTheCheckoutDetails extends BaseTest {
     private final String standard_username = TestUtils.getProperty("standard.username");
     private final String valid_password = TestUtils.getProperty("valid.password");
     private final String expected_OrderConfirmationText = TestUtils.getProperty("expected.OrderConfirmationText");
     private final String expected_OrderDispatchedText = TestUtils.getProperty("expected.OrderDispatchedText");
     private final int expected_ItemCount = Integer.parseInt(TestUtils.getProperty("expected.ItemCount"));
     @Epic("Swag Labs")
-    @Story("Place order without filling the checkout details")
+    @Description("Place order without filling the checkout details")
     @Test
     public void placingOrderWithoutFillingTheCheckoutDetails() {
         LoginPage loginPage = new LoginPage();

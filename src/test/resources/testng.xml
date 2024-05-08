@@ -1,21 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="Swag Labs Automation Test" >
+    <listeners>
+        <listener class-name="listeners.CustomListener"/>
+    </listeners>
 
-<suite name="Swag Labs Automation Test" verbose="1" >
-
-    <test name="FunctionalTestCases">
+    <test name="E2E">
         <classes>
-            <class name="UserAuthenticationTesting"/>
-            <class name="NegativePlacingOrderWithoutFillingTheCheckoutDetails"/>
-            <class name="ValidateProductDetailsAndComparePrice"/>
-            <class name="VerifySortingFunctionality"/>
+            <class name="e2e.PlaceOrderFromPDPage"/>
+            <class name="e2e.PlaceOrderWithStandardUserAddingAllItems"/>
+            <class name="e2e.PlaceOrderWithGlitchUserAddingAllItems"/>
+            <class name="e2e.PlaceOrderWithProblemUserAddingAllItems"/>
         </classes>
     </test>
-    <test name="E2E Test Cases">
+    <test name="FunctionalTestCases">
         <classes>
-            <class name="PlaceOrderFromPDPage"/>
-            <class name="PlaceOrderWithStandardUserAddingAllItems"/>
-            <class name="PlaceOrderWithGlitchUserAddingAllItems"/>
-            <class name="PlaceOrderWithProblemUserAddingAllItems"/>
+            <class name="functional.UserAuthenticationTesting"/>
+            <class name="functional.NegativePlacingOrderWithoutFillingTheCheckoutDetails"/>
+            <class name="functional.ValidateProductDetailsAndComparePrice"/>
+            <class name="functional.VerifySortingFunctionality"/>
         </classes>
     </test>
 </suite>
