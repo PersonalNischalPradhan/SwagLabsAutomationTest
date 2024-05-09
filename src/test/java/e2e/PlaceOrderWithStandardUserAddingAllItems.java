@@ -13,6 +13,7 @@ import utils.TestUtils;
 import static org.testng.Assert.assertEquals;
 
 public class PlaceOrderWithStandardUserAddingAllItems extends BaseTest {
+    KeywordManager keywordManager= new KeywordManager();
     private final String standard_username = TestUtils.getProperty("standard.username");
     private final String valid_password = TestUtils.getProperty("valid.password");
     private final String expected_OrderConfirmationText = TestUtils.getProperty("expected.OrderConfirmationText");
@@ -28,31 +29,26 @@ public class PlaceOrderWithStandardUserAddingAllItems extends BaseTest {
     @Description("Place order with all the items present with a standard user")
     @Test
     public void addProductsToBasketStdUser() {
-        LoginPage loginPage = new LoginPage();
-        loginPage.login(standard_username,valid_password);
+        keywordManager.loginPage.login(standard_username,valid_password);
         Selenide.sleep(4000);
-        HomePage homePage=new HomePage();
-        homePage.addToBasket("6");
-        homePage.addToBasket("5");
-        homePage.addToBasket("4");
-        homePage.addToBasket("3");
-        homePage.addToBasket("2");
-        homePage.addToBasket("1");
+        keywordManager.homePage.addToBasket("6");
+        keywordManager.homePage.addToBasket("5");
+        keywordManager.homePage.addToBasket("4");
+        keywordManager.homePage.addToBasket("3");
+        keywordManager.homePage.addToBasket("2");
+        keywordManager.homePage.addToBasket("1");
         validateBasketCount();
         Selenide.sleep(2000);
-        homePage.clickOnBasketIcon();
-        YourCartPage yourCartPage= new YourCartPage();
-        yourCartPage.clickOnCheckoutButton();
-        CheckoutInfoPage checkoutInfoPage=new CheckoutInfoPage();
-        checkoutInfoPage.enterFirstName(first_name);
-        checkoutInfoPage.enterLastName(last_name);
-        checkoutInfoPage.enterPostCode(valid_address);
-        checkoutInfoPage.clickOnContinue();
-        CheckoutOverviewPage checkoutOverviewPage= new CheckoutOverviewPage();
+        keywordManager.homePage.clickOnBasketIcon();
+        keywordManager.yourCartPage.clickOnCheckoutButton();
+        keywordManager.checkoutInfoPage.enterFirstName(first_name);
+        keywordManager.checkoutInfoPage.enterLastName(last_name);
+        keywordManager.checkoutInfoPage.enterPostCode(valid_address);
+        keywordManager.checkoutInfoPage.clickOnContinue();
         validateOrderPrice();
         validateCardDetails();
         validateShippingInfoDetails();
-        checkoutOverviewPage.clickOnFinishButton();
+        keywordManager.checkoutOverviewPage.clickOnFinishButton();
         validateOrderConfirmationText();
         validateOrderDispatched();
 
@@ -60,38 +56,32 @@ public class PlaceOrderWithStandardUserAddingAllItems extends BaseTest {
 
     @Step
     public void validateOrderConfirmationText() {
-        OrderConfirmationPage orderConfirmationPage=new OrderConfirmationPage();
-        String actualUiConfirmationText = orderConfirmationPage.getOrderConfirmationMessage();
+        String actualUiConfirmationText = keywordManager.orderConfirmationPage.getOrderConfirmationMessage();
         assertEquals(actualUiConfirmationText, expected_OrderConfirmationText,"Order Confirmation text  mismatched ");
     }
     @Step
     public void validateOrderDispatched() {
-        OrderConfirmationPage orderConfirmationPage=new OrderConfirmationPage();
-        String actualUiDispatchedText = orderConfirmationPage.getOrderDispatchedMessage();
+        String actualUiDispatchedText = keywordManager.orderConfirmationPage.getOrderDispatchedMessage();
         assertEquals(actualUiDispatchedText, expected_OrderDispatchedText,"Order Confirmation text  mismatched ");
     }
     @Step
     public void validateBasketCount() {
-        HomePage homePage= new HomePage();
-        int actualItemCount = homePage.getItemsInBasketCount();
+        int actualItemCount = keywordManager.homePage.getItemsInBasketCount();
         assertEquals(actualItemCount, expected_ItemCount,"Basket Count Mismatched for the user " +standard_username);
     }
     @Step
     public void validateOrderPrice() {
-        CheckoutOverviewPage checkoutOverviewPage= new CheckoutOverviewPage();
-        double orderPriceActual = checkoutOverviewPage.getOrderPriceDetailsText();
+        double orderPriceActual = keywordManager.checkoutOverviewPage.getOrderPriceDetailsText();
         assertEquals(orderPriceActual, expected_OrderPrice,"Order Price Mismatched for the user " +standard_username);
     }
     @Step
     public void validateShippingInfoDetails() {
-        CheckoutOverviewPage checkoutOverviewPage= new CheckoutOverviewPage();
-        String shippingInfoDetailsActual = checkoutOverviewPage.getShippingInfoDetailsText();
+        String shippingInfoDetailsActual = keywordManager.checkoutOverviewPage.getShippingInfoDetailsText();
         assertEquals(shippingInfoDetailsActual, expected_shippingInfoDetailsActual,"Shipping Info Details Mismatched for the user " +standard_username);
     }
     @Step
     public void validateCardDetails() {
-        CheckoutOverviewPage checkoutOverviewPage= new CheckoutOverviewPage();
-        String cardDetailsActual = checkoutOverviewPage.getCardDetailsText();
+        String cardDetailsActual = keywordManager.checkoutOverviewPage.getCardDetailsText();
         assertEquals(cardDetailsActual, expected_CardDetails,"Card Details Mismatched for the user " +standard_username);
     }
 }

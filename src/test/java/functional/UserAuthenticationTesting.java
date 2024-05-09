@@ -8,12 +8,14 @@ import io.qameta.allure.Step;
 import io.qameta.allure.Story;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import pages.KeywordManager;
 import pages.LoginPage;
 import utils.TestUtils;
 
 import static org.testng.Assert.assertEquals;
 
 public class UserAuthenticationTesting extends BaseTest {
+    KeywordManager keywordManager= new KeywordManager();
     private final String standard_username = TestUtils.getProperty("standard.username");
     private final String valid_password = TestUtils.getProperty("valid.password");
     private final String performance_glitch_user = TestUtils.getProperty("performance.glitch.username");
@@ -31,18 +33,16 @@ public class UserAuthenticationTesting extends BaseTest {
     @Description("Unhappy path for login functionality")
     @Test(dataProvider = "userDataUnhappyPath")
     public void testLoginUnhappyPath(String username,String password,String expectedErrorMessage) {
-        LoginPage loginPage = new LoginPage();
-        loginPage.login(username,password);
+        keywordManager.loginPage.login(username,password);
         Selenide.sleep(4000);
         uiMessageValidation(username,password,expectedErrorMessage);
 
     }
     @Epic("Swag Labs")
-    @Story("Happy path for login functionality")
+    @Description("Happy path for login functionality")
     @Test(dataProvider = "userDataHappyPath")
     public void testLoginHappyPath(String username,String password) {
-        LoginPage loginPage = new LoginPage();
-        loginPage.login(username,password);
+        keywordManager.loginPage.login(username,password);
         Selenide.sleep(4000);
 
     }
@@ -50,8 +50,7 @@ public class UserAuthenticationTesting extends BaseTest {
     @Step
     public void uiMessageValidation(String username,String password,String expectedErrorMessage) {
 
-        LoginPage loginPage = new LoginPage();
-            String actualUiErrorMessage = loginPage.getUIErrorText();
+       String actualUiErrorMessage= keywordManager.loginPage.getUIErrorText();
             assertEquals(actualUiErrorMessage, expectedErrorMessage,"Error message mismatch for username: " + username);
         }
 
